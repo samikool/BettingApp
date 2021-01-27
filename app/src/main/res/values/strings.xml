@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Betting App</string>
+    <string name="title_activity_initialize_game">InitializeGameActivity</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="title_activity_game_over">GameOverActivity</string>
+
+    <string-array name="round_end_options">
+        <item>winner</item>
+        <item>loser</item>
+        <item>safe</item>
+    </string-array>
+</resources>

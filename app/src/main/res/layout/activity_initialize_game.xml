@@ -13,9 +13,13 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="349dp"
-        android:layout_height="415dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/doneButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,34 +36,30 @@
         android:id="@+id/playerNameInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Player Name"
         android:inputType="textPersonName"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintTop_toBottomOf="@+id/winAmtInput" />
 
     <Button
         android:id="@+id/addPlayerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
         android:text="ADD"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.107"
-        app:layout_constraintStart_toEndOf="@+id/playerNameInput"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.099" />
+        app:layout_constraintTop_toBottomOf="@+id/winAmtInput" />
 
     <Button
         android:id="@+id/doneButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="84dp"
+        android:layout_marginBottom="16dp"
         android:text="Done"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,42 +70,40 @@
         android:id="@+id/anteAmtInput"
         android:layout_width="60dp"
         android:layout_height="47dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Ante"
         android:inputType="numberDecimal"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/playerNameInput"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.457" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/winAmtInput"
         android:layout_width="60dp"
         android:layout_height="47dp"
-        android:layout_marginStart="84dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Win"
         android:inputType="numberDecimal"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/playerNameInput"
+        app:layout_constraintEnd_toStartOf="@+id/loseAmtInput"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toEndOf="@+id/anteAmtInput"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.457" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/loseAmtInput"
         android:layout_width="60dp"
         android:layout_height="47dp"
-        android:layout_marginStart="84dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
         android:hint="Lose"
         android:inputType="numberDecimal"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/playerNameInput"
-        app:layout_constraintStart_toEndOf="@+id/winAmtInput"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.457" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,13 +8,16 @@
 
     <ScrollView
         android:id="@+id/scrollView3"
-        android:layout_width="355dp"
-        android:layout_height="419dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/endRoundButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.724">
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <LinearLayout
             android:id="@+id/playerStateLayout"
@@ -27,21 +30,21 @@
         android:id="@+id/anteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="Ante"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/optionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
         android:text="options"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/backButton"
@@ -57,7 +60,7 @@
         android:id="@+id/potAmount"
         android:layout_width="134dp"
         android:layout_height="71dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:enabled="false"
         android:inputType="numberDecimal"
@@ -66,14 +69,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/potLabel"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/endGameButton" />
 
     <EditText
         android:id="@+id/potLabel"
         android:layout_width="110dp"
         android:layout_height="71dp"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:editable="false"
         android:ems="10"
         android:inputType="textPersonName"
@@ -81,60 +84,58 @@
         android:textAlignment="center"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
     <Button
         android:id="@+id/endRoundButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         android:text="End Round"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/anteButton"
-        app:layout_constraintStart_toEndOf="@+id/optionButton"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
+        app:layout_constraintStart_toEndOf="@+id/optionButton" />
 
     <Button
         android:id="@+id/endGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="End Game"
-        app:layout_constraintBottom_toTopOf="@+id/potAmount"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.444" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Player Name"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentAnteAmtLabel" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Balance"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentAnteAmtLabel" />
 
     <TextView
         android:id="@+id/currentAnteAmtLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Current Ante Amount: "
-        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/potLabel"
-        app:layout_constraintVertical_bias="0.387" />
+        app:layout_constraintTop_toBottomOf="@+id/potLabel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

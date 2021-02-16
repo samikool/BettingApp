@@ -35,6 +35,7 @@ public class Game implements Serializable {
     public double getPot() {
         return pot;
     }
+    public void setPot(double pot){ this.pot = pot; }
 
     public void setWinAmt(double winAmt) {
         this.winAmt = winAmt;
@@ -136,27 +137,41 @@ public class Game implements Serializable {
         antedPlayers.clear();
     }
 
-    public void printState(){
+    @Override
+    public String toString(){
+        StringBuffer s = new StringBuffer();
+
         for(Player p : players){
-            System.out.println(p.getName() + ": " + p.getBalance());
+            s.append(p.getName());
+            s.append(": ");
+            s.append(p.getBalance());
+            s.append("\n");
         }
 
-        System.out.println("WINNER:");
-        if (winner != null) System.out.println(winner.getName());
-        else System.out.println("Not set ");
+        s.append("WINNER:\n");
+        if (winner != null){
+            s.append(winner.getName());
+            s.append("\n");
+        }
+        else s.append("Not set \n");
 
-
-        System.out.println("LOSERS:");
+        s.append("LOSERS:\n");
         for(Player p : losingPlayers){
-            System.out.println(p.getName());
+            s.append(p.getName());
+            s.append("\n");
         }
 
-        System.out.println("SAFERS:");
+        s.append("SAFERS:\n");
         for(Player p : safePlayers){
-            System.out.println(p.getName());
+            s.append(p.getName());
+            s.append("\n");
         }
 
-        System.out.println("POT: " + pot);
+        s.append("POT: ");
+        s.append(pot);
+        s.append("\n");
+
+        return s.toString();
     }
 
     public void endGame(){

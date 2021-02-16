@@ -29,6 +29,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
@@ -52,6 +55,7 @@ public class GameActivity extends AppCompatActivity {
     private HashMap<String, Player> playerMap;
     private HashMap<Player, TextView> playerBalances;
     private Game game;
+    private boolean inRound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +85,8 @@ public class GameActivity extends AppCompatActivity {
         game = new Game(players.size(), anteAmt, winAmt, loseAmt);
 
         //add player to game
-        for(String name : playerNames){
-            Player p = new Player(name,0);
+        for (String name : playerNames) {
+            Player p = new Player(name, 0);
             players.add(p);
             playerMap.put(name, p);
             game.addPlayer(p);
@@ -91,7 +95,7 @@ public class GameActivity extends AppCompatActivity {
         //create player rows
         playerBoxes = new ArrayList<CheckBox>();
         LayoutInflater inflater = getLayoutInflater();
-        for(Player p : players){
+        for (Player p : players) {
             addRowToLayout(inflater, playerStateLayout, p);
         }
 
@@ -101,8 +105,20 @@ public class GameActivity extends AppCompatActivity {
         anteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(CheckBox box : playerBoxes){
-                    if (box.isChecked()){
+                if (inRound) {
+                    Snackbar bar = Snackbar.make(v, "You're already anted! End Round to Ante again.", BaseTransientBottomBar.LENGTH_SHORT);
+                    bar.setAction("Dismiss", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            bar.dismiss();
+                        }
+                    });
+                    bar.show();
+                    return;
+                }
+
+                for (CheckBox box : playerBoxes) {
+                    if (box.isChecked()) {
                         String name = box.getText().toString();
                         Player p = playerMap.get(name);
                         game.antePlayer(p);
@@ -111,6 +127,7 @@ public class GameActivity extends AppCompatActivity {
 
                 potAmount.setText(decFormat.format(game.getPot()));
                 updateBalances();
+                inRound = true;
             }
         });
 
@@ -139,9 +156,9 @@ public class GameActivity extends AppCompatActivity {
                         String win = winView.getText().toString();
                         String lose = loseView.getText().toString();
 
-                        if(ante.startsWith("$")) ante = ante.substring(1);
-                        if(win.startsWith("$")) win = win.substring(1);
-                        if(lose.startsWith("$")) lose = lose.substring(1);
+                        if (ante.startsWith("$")) ante = ante.substring(1);
+                        if (win.startsWith("$")) win = win.substring(1);
+                        if (lose.startsWith("$")) lose = lose.substring(1);
 
                         double newAnteAmt = Double.parseDouble(ante);
                         double newWinAmt = Double.parseDouble(win);
@@ -158,7 +175,8 @@ public class GameActivity extends AppCompatActivity {
 
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {}
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
                 });
 
                 builder.create().show();
@@ -169,13 +187,25 @@ public class GameActivity extends AppCompatActivity {
             @SuppressLint("WrongConstant")
             @Override
             public void onClick(View v) {
+                if (!inRound) {
+                    Snackbar bar = Snackbar.make(v, "Nobody has anted yet! Ante before you end the round.", BaseTransientBottomBar.LENGTH_SHORT);
+                    bar.setAction("Dismiss", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            bar.dismiss();
+                        }
+                    });
+                    bar.show();
+                    return;
+                }
+
                 ArrayList<String> tempList = new ArrayList<>();
                 playerMap.forEach((String name, Player player) -> {
-                    if(player.isAnted()) tempList.add(name);
+                    if (player.isAnted()) tempList.add(name);
                 });
 
                 CharSequence[] antedPlayers = new CharSequence[tempList.size()];
-                for(int i=0; i<tempList.size(); i++){
+                for (int i = 0; i < tempList.size(); i++) {
                     antedPlayers[i] = tempList.get(i);
                 }
 
@@ -187,7 +217,7 @@ public class GameActivity extends AppCompatActivity {
                 LinearLayout layout = dialogView.findViewById(R.id.dialogSelectWinnerLayout);
 
                 playerMap.forEach((String name, Player p) -> {
-                    if(p.isAnted()){
+                    if (p.isAnted()) {
                         addRowToWinnerLayout(inflater, layout, p);
                     }
                 });
@@ -200,26 +230,42 @@ public class GameActivity extends AppCompatActivity {
                     }
                 });
 
-
                 builder.setView(dialogView);
                 builder.create().show();
-
-
             }
         });
 
         endGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.endGame();
-                Intent goToGameOver = new Intent(getApplicationContext(), GameOverActivity.class);
-                goToGameOver.putExtra("game", game);
-                goToGameOver.putExtra("players", players);
-                startActivity(goToGameOver);
-                finish();
+                if (inRound) {
+                    Snackbar bar = Snackbar.make(v, "You're still anted! End Round to end the game.", BaseTransientBottomBar.LENGTH_SHORT);
+                    bar.setAction("Dismiss", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            bar.dismiss();
+                        }
+                    });
+                    bar.show();
+                    return;
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setMessage("Are you sure you want to end the game?");
+                builder.setPositiveButton("Yes", (dialog, which) -> {
+                    game.endGame();
+                    Intent goToGameOver = new Intent(getApplicationContext(), GameOverActivity.class);
+                    goToGameOver.putExtra("game", game);
+                    goToGameOver.putExtra("players", players);
+                    startActivity(goToGameOver);
+                    finish();
+                });
+                builder.setNegativeButton(("No"), (dialog, which) -> dialog.dismiss());
+                builder.show();
             }
         });
     }
+
 
     public void updateBalances(){
         playerBalances.forEach((Player p, TextView v) -> {
@@ -234,6 +280,7 @@ public class GameActivity extends AppCompatActivity {
         TextView balance = row.findViewById(R.id.playerBalanceView);
 
         box.setText(p.getName());
+        box.setChecked(true);
         balance.setText(decFormat.format(p.getBalance()));
 
         playerBoxes.add(box);
@@ -270,8 +317,6 @@ public class GameActivity extends AppCompatActivity {
                 if(position == 0) game.setWinner(p);
                 else if(position == 1) game.addLoser(p);
                 else if(position == 2) game.addSafer(p);
-
-                game.printState();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -282,10 +327,11 @@ public class GameActivity extends AppCompatActivity {
 
     public void resetRound(){
         for(CheckBox box : playerBoxes){
-            box.setChecked(false);
+            box.setChecked(true);
         }
         potAmount.setText(decFormat.format(game.getPot()));
         updateBalances();
+        inRound = false;
     }
 
 

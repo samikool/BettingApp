@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -23,6 +27,10 @@ public class GameOverActivity extends AppCompatActivity {
     private Button exitButton;
     private Button newGameButton;
 
+    private Button awardPotButton;
+    private TextView awardPotAmountView;
+    private Spinner awardPlayerPotSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +38,10 @@ public class GameOverActivity extends AppCompatActivity {
 
         newGameButton = findViewById(R.id.newGameButton);
         exitButton = findViewById(R.id.exitButton);
+
+        awardPotButton = (Button) findViewById(R.id.awardPotButton);
+        awardPlayerPotSpinner = (Spinner) findViewById(R.id.awardPotPlayerSelector);
+        awardPotAmountView = (TextView) findViewById(R.id.potAwardAmountView);
 
         gameOverPlayerLayout = findViewById(R.id.gameOverPlayerLayout);
         game = (Game) getIntent().getExtras().get("game");
@@ -69,5 +81,52 @@ public class GameOverActivity extends AppCompatActivity {
                 finishAffinity();
             }
         });
+
+        ArrayList<String> playerNames = new ArrayList<String>();
+        for(Player p : players){
+            playerNames.add(p.getName());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, playerNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        awardPlayerPotSpinner.setAdapter(adapter);
+
+        awardPotAmountView.setText(decFormat.format(game.getPot()));
+
+        awardPotButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String playerName = awardPlayerPotSpinner.getSelectedItem().toString();
+
+                for(Player p : players){
+                    if(p.getName() == playerName){
+                        System.out.println("Winner was:" + playerName);
+
+                        p.win(game.getPot());
+                        game.setPot(0);
+
+                        awardPotAmountView.setText(decFormat.format(game.getPot()));
+
+                        for(int i=0; i<gameOverPlayerLayout.getChildCount(); i++){
+                            View playerRow = gameOverPlayerLayout.getChildAt(i);
+                            TextView playerNameView =(TextView) playerRow.findViewById(R.id.gameOverPlayerNameView);
+
+                            if(playerNameView.getText().toString().equals(playerName)){
+                                TextView balance = playerRow.findViewById(R.id.gameOverPlayerBalanceView);
+                                balance.setText(decFormat.format(p.getBalance()));
+                                if(p.getBalance() < 0){
+                                    balance.setTextColor(getColor(R.color.negative));
+                                }else{
+                                    balance.setTextColor(getColor(R.color.positive));
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+        });
+
     }
 }
